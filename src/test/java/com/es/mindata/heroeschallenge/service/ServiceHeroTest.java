@@ -10,8 +10,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
+import org.assertj.core.util.Arrays;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -57,6 +59,7 @@ public class ServiceHeroTest {
 		when(repository.findById(ID_HERO_DELETE)).thenReturn(Optional.of(hero));
 		when(repository.save(hero)).thenReturn(hero);
 		when(repository.save(hero)).thenReturn(hero);
+		when(repository.findAll()).thenReturn(List.of(hero));
 	}
 	
 	@Test
@@ -75,11 +78,11 @@ public class ServiceHeroTest {
 	}
 
 	@Test
-	public void testFindAllHeroes(){
-	    assertThat(service.findAllHeroes(), is(Collections.emptyList()));
+	public void testFindAllHeroesWithElements(){
+	    assertThat(service.findAllHeroes(), is(List.of(hero)));
 	    verify(repository).findAll();
 	}
-
+	
 	@Test
 	public void testDeleteHeroById(){
 		service.deleteHeroById(ID_HERO_DELETE);
@@ -117,4 +120,5 @@ public class ServiceHeroTest {
 	    verify(repository, never()).findById(eq(ID_HERO_NOT_FOUND));
 	    verify(repository, never()).save(eq(hero));
 	}
+
 }
