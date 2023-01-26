@@ -14,7 +14,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.util.Arrays;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -37,6 +36,7 @@ public class ServiceHeroTest {
 	private static final Long ID_HERO_DELETE_NOT_FOUND = 10L;
 	private static final String NAME = "Spiderman";
 	private static final String NAME_LIKE = "man";
+	private static final String NAME_LIKE_NOT_MATCH = "Bat";
 	
 	
 	@Mock
@@ -63,6 +63,7 @@ public class ServiceHeroTest {
 		when(repository.save(hero)).thenReturn(hero);
 		when(repository.findAll()).thenReturn(List.of(hero));
 		when(repository.searchHeroByName(NAME_LIKE)).thenReturn(List.of(hero));
+		when(repository.searchHeroByName(NAME_LIKE_NOT_MATCH)).thenReturn(Collections.emptyList());
 	}
 	
 	@Test
@@ -129,6 +130,13 @@ public class ServiceHeroTest {
 	    assertThat(service.searchHeroByName(NAME_LIKE), is(List.of(hero)));
 	    verify(repository).searchHeroByName(NAME_LIKE);
 	    verify(repository, times(1)).searchHeroByName(NAME_LIKE);
+	}
+	
+	@Test
+	public void testSearchHeroByNameAndNotMatchedThenReturnEmptyLists(){
+	    assertThat(service.searchHeroByName(NAME_LIKE_NOT_MATCH), is(Collections.emptyList()));
+	    verify(repository).searchHeroByName(NAME_LIKE_NOT_MATCH);
+	    verify(repository, times(1)).searchHeroByName(NAME_LIKE_NOT_MATCH);
 	}
 	
 	@Test
