@@ -18,11 +18,7 @@ public class HeroServiceImpl implements HeroService {
 	private final HeroRepository repository;
 	
 	public Hero findHeroById(Long heroId) {
-		var heroOpt = repository.findById(heroId);
-		if(heroOpt.isEmpty()) {
-			throw new HeroNotFoundException("Hero not found");
-		}
-		return heroOpt.get();
+		return getHeroById(heroId);
 	}
 
 	public List<Hero> findAllHeroes() {
@@ -30,11 +26,15 @@ public class HeroServiceImpl implements HeroService {
 	}
 
 	public void deleteHeroById(Long heroId) {
+		 var HeroDB = getHeroById(heroId);
+		 repository.delete(HeroDB);
+	}
+
+	private Hero getHeroById(Long heroId) {
 		var heroOpt = repository.findById(heroId);
 		if(heroOpt.isEmpty()) {
 			throw new HeroNotFoundException("Hero not found");
 		}
-		repository.delete(heroOpt.get());
+		return heroOpt.get();
 	}
-
 }
