@@ -9,4 +9,6 @@ public interface HeroService {
 	Hero findHeroById(Long heroId);
 	
 	List<Hero> findAllHeroes();
+	
+	void deleteHeroById(Long id);
 }

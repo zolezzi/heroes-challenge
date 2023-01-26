@@ -2,6 +2,7 @@ package com.es.mindata.heroeschallenge.service;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -28,6 +29,8 @@ public class ServiceHeroTest {
 
 	private static final Long ID = 1L;
 	private static final Long ID_HERO_NOT_FOUND = 10L;
+	private static final Long ID_HERO_DELETE = 2L;
+	private static final Long ID_HERO_DELETE_NOT_FOUND = 10L;
 	
 	@Mock
 	private Hero hero;
@@ -45,6 +48,7 @@ public class ServiceHeroTest {
 	public void setUp(){
 		service = new HeroServiceImpl(repository);
 		when(repository.findById(ID)).thenReturn(Optional.of(hero));
+		when(repository.findById(ID_HERO_DELETE)).thenReturn(Optional.of(hero));
 	}
 	
 	@Test
@@ -68,4 +72,18 @@ public class ServiceHeroTest {
 	    verify(repository).findAll();
 	}
 
+	@Test
+	public void testDeleteHeroById(){
+		service.deleteHeroById(ID_HERO_DELETE);
+	    verify(repository).delete(any(Hero.class));
+	}
+	
+	@Test
+	public void testDeleteHeroByIdAndNotFoundThenReturnException(){
+		ex.expect(HeroNotFoundException.class);
+		ex.expectMessage("Hero not found");
+		service.deleteHeroById(ID_HERO_DELETE_NOT_FOUND);
+		verify(repository, never()).findById(eq(ID_HERO_DELETE_NOT_FOUND));
+	}
+	
 }

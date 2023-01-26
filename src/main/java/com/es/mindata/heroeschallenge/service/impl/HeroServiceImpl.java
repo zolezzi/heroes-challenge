@@ -29,4 +29,12 @@ public class HeroServiceImpl implements HeroService {
 		return repository.findAll();
 	}
 
+	public void deleteHeroById(Long heroId) {
+		var heroOpt = repository.findById(heroId);
+		if(heroOpt.isEmpty()) {
+			throw new HeroNotFoundException("Hero not found");
+		}
+		repository.delete(heroOpt.get());
+	}
+
 }
