@@ -7,6 +7,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
 import java.util.Optional;
 
 import org.junit.Before;
@@ -61,5 +62,10 @@ public class ServiceHeroTest {
 		verify(repository, never()).findById(eq(ID_HERO_NOT_FOUND));
 	}
 
+	@Test
+	public void testFindAllHeroes(){
+	    assertThat(service.findAllHeroes(), is(Collections.emptyList()));
+	    verify(repository).findAll();
+	}
 
 }

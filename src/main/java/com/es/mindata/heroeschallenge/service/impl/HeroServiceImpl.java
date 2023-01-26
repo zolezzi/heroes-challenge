@@ -1,5 +1,7 @@
 package com.es.mindata.heroeschallenge.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.es.mindata.heroeschallenge.exception.HeroNotFoundException;
@@ -21,6 +23,10 @@ public class HeroServiceImpl implements HeroService {
 			throw new HeroNotFoundException("Hero not found");
 		}
 		return heroOpt.get();
+	}
+
+	public List<Hero> findAllHeroes() {
+		return repository.findAll();
 	}
 
 }
