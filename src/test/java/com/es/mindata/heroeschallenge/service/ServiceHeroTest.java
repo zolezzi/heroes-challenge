@@ -3,6 +3,7 @@ package com.es.mindata.heroeschallenge.service;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -35,6 +36,7 @@ public class ServiceHeroTest {
 	private static final Long ID_HERO_DELETE = 2L;
 	private static final Long ID_HERO_DELETE_NOT_FOUND = 10L;
 	private static final String NAME = "Spiderman";
+	private static final String NAME_LIKE = "man";
 	
 	
 	@Mock
@@ -60,6 +62,7 @@ public class ServiceHeroTest {
 		when(repository.save(hero)).thenReturn(hero);
 		when(repository.save(hero)).thenReturn(hero);
 		when(repository.findAll()).thenReturn(List.of(hero));
+		when(repository.searchHeroByName(NAME_LIKE)).thenReturn(List.of(hero));
 	}
 	
 	@Test
@@ -120,5 +123,19 @@ public class ServiceHeroTest {
 	    verify(repository, never()).findById(eq(ID_HERO_NOT_FOUND));
 	    verify(repository, never()).save(eq(hero));
 	}
-
+	
+	@Test
+	public void testSearchHeroByNameThenReturnListHeroes(){
+	    assertThat(service.searchHeroByName(NAME_LIKE), is(List.of(hero)));
+	    verify(repository).searchHeroByName(NAME_LIKE);
+	    verify(repository, times(1)).searchHeroByName(NAME_LIKE);
+	}
+	
+	@Test
+	public void testSearchHeroByNameAndNotFoundThenReturnException(){
+		ex.expect(HeroNotFoundException.class);
+		ex.expectMessage("Hero not found");
+		service.searchHeroByName(null);
+	    verify(repository, never()).searchHeroByName(eq(anyString()));
+	}
 }

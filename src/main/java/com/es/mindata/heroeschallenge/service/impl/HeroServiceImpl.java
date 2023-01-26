@@ -39,6 +39,13 @@ public class HeroServiceImpl implements HeroService {
 		HeroDB.setName(hero.getName());
 		return repository.save(HeroDB);
 	}
+
+	public List<Hero> searchHeroByName(String name) {
+		if(name == null) {
+			throw new HeroNotFoundException("Hero not found");
+		}
+		return repository.searchHeroByName(name);
+	}
 	
 	private Hero getHeroById(Long heroId) {
 		var heroOpt = repository.findById(heroId);

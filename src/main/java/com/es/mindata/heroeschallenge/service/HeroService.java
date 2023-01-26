@@ -13,4 +13,8 @@ public interface HeroService {
 	void deleteHeroById(Long id);
 	
 	Hero saveHero(Hero hero);
+	
+	Hero updateHero(Hero hero, Long heroId);
+	
+	List<Hero> searchHeroByName(String name);
 }
