@@ -29,7 +29,17 @@ public class HeroServiceImpl implements HeroService {
 		 var HeroDB = getHeroById(heroId);
 		 repository.delete(HeroDB);
 	}
-
+	
+	public Hero saveHero(Hero hero) {
+		return repository.save(hero);
+	}
+	
+	public Hero updateHero(Hero hero, Long heroId) {
+		var HeroDB = getHeroById(heroId);
+		HeroDB.setName(hero.getName());
+		return repository.save(HeroDB);
+	}
+	
 	private Hero getHeroById(Long heroId) {
 		var heroOpt = repository.findById(heroId);
 		if(heroOpt.isEmpty()) {
@@ -37,4 +47,5 @@ public class HeroServiceImpl implements HeroService {
 		}
 		return heroOpt.get();
 	}
+
 }

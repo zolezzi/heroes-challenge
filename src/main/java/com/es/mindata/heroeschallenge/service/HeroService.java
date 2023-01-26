@@ -11,4 +11,6 @@ public interface HeroService {
 	List<Hero> findAllHeroes();
 	
 	void deleteHeroById(Long id);
+	
+	Hero saveHero(Hero hero);
 }

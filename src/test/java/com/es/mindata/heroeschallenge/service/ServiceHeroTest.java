@@ -5,6 +5,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +32,8 @@ public class ServiceHeroTest {
 	private static final Long ID_HERO_NOT_FOUND = 10L;
 	private static final Long ID_HERO_DELETE = 2L;
 	private static final Long ID_HERO_DELETE_NOT_FOUND = 10L;
+	private static final String NAME = "Spiderman";
+	
 	
 	@Mock
 	private Hero hero;
@@ -47,8 +50,13 @@ public class ServiceHeroTest {
 	@Before
 	public void setUp(){
 		service = new HeroServiceImpl(repository);
+		
+		when(hero.getName()).thenReturn(NAME);
+		
 		when(repository.findById(ID)).thenReturn(Optional.of(hero));
 		when(repository.findById(ID_HERO_DELETE)).thenReturn(Optional.of(hero));
+		when(repository.save(hero)).thenReturn(hero);
+		when(repository.save(hero)).thenReturn(hero);
 	}
 	
 	@Test
@@ -86,4 +94,27 @@ public class ServiceHeroTest {
 		verify(repository, never()).findById(eq(ID_HERO_DELETE_NOT_FOUND));
 	}
 	
+	@Test
+	public void testSaveHero(){
+	    assertThat(service.saveHero(hero), is(hero));
+	    verify(repository).save(eq(hero));
+	}
+	
+	@Test
+	public void testUpdateHero(){
+		assertThat(hero.getName(), is(NAME));
+		hero.setName("Spider-Man");
+	    assertThat(service.updateHero(hero, ID), is(hero));
+	    verify(repository).save(eq(hero));
+	    verify(repository, times(1)).save(hero);
+	}
+	
+	@Test
+	public void testUpdateHeroAndNotFoundThenReturnException(){
+		ex.expect(HeroNotFoundException.class);
+		ex.expectMessage("Hero not found");
+		service.updateHero(hero, ID_HERO_NOT_FOUND);
+	    verify(repository, never()).findById(eq(ID_HERO_NOT_FOUND));
+	    verify(repository, never()).save(eq(hero));
+	}
 }
