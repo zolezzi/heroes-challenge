@@ -42,4 +42,10 @@ public class HeroControllerTest {
 		assertThat(controller.findHeroById(ID), is(heroDto));
 		verify(service).findHeroById(eq(ID));
 	}
+	
+//	@Test
+//	public void testFindHeroByIdThenReturnAHeroDTO(){
+//		assertThat(controller.findHeroById(ID), is(heroDto));
+//		verify(service).findHeroById(eq(ID));
+//	}
 }
