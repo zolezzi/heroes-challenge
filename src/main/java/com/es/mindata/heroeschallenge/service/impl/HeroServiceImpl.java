@@ -1,6 +1,7 @@
 package com.es.mindata.heroeschallenge.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,7 @@ import com.es.mindata.heroeschallenge.exception.HeroNotFoundException;
 import com.es.mindata.heroeschallenge.repository.HeroRepository;
 import com.es.mindata.heroeschallenge.service.HeroService;
 import com.es.mindata.heroeschallenge.utils.MapperUtil;
+import com.es.mindata.heroeschallenge.vo.HeroVO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,8 +27,11 @@ public class HeroServiceImpl implements HeroService {
 		return mapperUtil.getMapper().map(HeroDB, HeroDTO.class);
 	}
 
-	public List<Hero> findAllHeroes() {
-		return repository.findAll();
+	public List<HeroDTO> findAllHeroes() {
+		return  repository.findAll()
+				.stream()
+				.map((hero -> mapperUtil.getMapper().map(hero, HeroDTO.class)))
+				.collect(Collectors.toList());
 	}
 
 	public void deleteHeroById(Long heroId) {
@@ -34,8 +39,9 @@ public class HeroServiceImpl implements HeroService {
 		 repository.delete(HeroDB);
 	}
 	
-	public Hero saveHero(Hero hero) {
-		return repository.save(hero);
+	public HeroDTO saveHero(HeroVO hero) {
+		var heroDB = repository.save(mapperUtil.getMapper().map(hero, Hero.class));
+		return mapperUtil.getMapper().map(heroDB, HeroDTO.class);
 	}
 	
 	public Hero updateHero(Hero hero, Long heroId) {

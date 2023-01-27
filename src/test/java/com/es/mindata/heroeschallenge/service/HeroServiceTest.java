@@ -19,6 +19,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
@@ -29,6 +30,7 @@ import com.es.mindata.heroeschallenge.exception.HeroNotFoundException;
 import com.es.mindata.heroeschallenge.repository.HeroRepository;
 import com.es.mindata.heroeschallenge.service.impl.HeroServiceImpl;
 import com.es.mindata.heroeschallenge.utils.MapperUtil;
+import com.es.mindata.heroeschallenge.vo.HeroVO;
 
 @RunWith(MockitoJUnitRunner.class)
 public class HeroServiceTest {
@@ -60,6 +62,7 @@ public class HeroServiceTest {
 	@Rule
 	public ExpectedException ex = ExpectedException.none();
 	
+	@InjectMocks
 	private HeroServiceImpl service;
 	
 	
@@ -71,7 +74,8 @@ public class HeroServiceTest {
 		
 		when(repository.findById(ID)).thenReturn(Optional.of(hero));
 		when(mapperUtil.getMapper()).thenReturn(mapper);
-		when(mapper.map(any(), any())).thenReturn(heroDto);
+		when(mapper.map(eq(hero), eq(HeroDTO.class))).thenReturn(heroDto);
+		when(mapper.map(any(), eq(Hero.class))).thenReturn(hero);
 		when(repository.findById(ID_HERO_DELETE)).thenReturn(Optional.of(hero));
 		when(repository.save(hero)).thenReturn(hero);
 		when(repository.save(hero)).thenReturn(hero);
@@ -97,7 +101,7 @@ public class HeroServiceTest {
 
 	@Test
 	public void testFindAllHeroesWithElements(){
-	    assertThat(service.findAllHeroes(), is(List.of(hero)));
+	    assertThat(service.findAllHeroes(), is(List.of(heroDto)));
 	    verify(repository).findAll();
 	}
 	
@@ -117,7 +121,9 @@ public class HeroServiceTest {
 	
 	@Test
 	public void testSaveHero(){
-	    assertThat(service.saveHero(hero), is(hero));
+		var heroVO = new HeroVO();
+		heroVO.setName(NAME);
+	    assertThat(service.saveHero(heroVO), is(heroDto));
 	    verify(repository).save(eq(hero));
 	}
 	

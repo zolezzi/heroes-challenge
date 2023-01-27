@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
 import com.es.mindata.heroeschallenge.entity.Hero;
+import com.es.mindata.heroeschallenge.vo.HeroVO;
 
 @Component
 public class MapperUtil {
@@ -25,6 +26,10 @@ public class MapperUtil {
         this.modelMapper.typeMap(Hero.class, HeroDTO.class).addMappings(mapper -> {
             mapper.map(Hero::getId, HeroDTO::setId);
             mapper.map(Hero::getName, HeroDTO::setName);
+        });
+        
+        this.modelMapper.typeMap(HeroVO.class, HeroDTO.class).addMappings(mapper -> {
+            mapper.map(HeroVO::getName, HeroDTO::setName);
         });
     }
 }
