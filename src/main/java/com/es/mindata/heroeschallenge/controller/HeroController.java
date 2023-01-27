@@ -38,4 +38,8 @@ public class HeroController {
     	service.deleteHeroById(heroId);
         return new BasicResponse("Successfully deleted", Boolean.FALSE);
     }
+    
+    public List<HeroDTO> searchHeroByName(@RequestBody String name){
+        return service.searchHeroByName(name);
+    }
 }

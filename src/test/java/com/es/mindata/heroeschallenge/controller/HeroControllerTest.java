@@ -27,7 +27,8 @@ public class HeroControllerTest {
 	
 	private static final Long ID = 1L;
 	private static final String NAME = "Spiderman";
-
+	private static final String NAME_LIKE = "man";
+	
 	@Mock
 	private HeroServiceImpl service;
 	
@@ -46,6 +47,7 @@ public class HeroControllerTest {
 		when(service.findAllHeroes()).thenReturn(List.of(heroDto));
 		when(service.saveHero(any())).thenReturn(heroDto);
 		when(service.updateHero(heroDto, ID)).thenReturn(heroDto);
+		when(service.searchHeroByName(NAME_LIKE)).thenReturn(List.of(heroDto));
 	}
 	
 	@Test
@@ -87,4 +89,11 @@ public class HeroControllerTest {
 		assertThat(response.getError(),is(Boolean.FALSE));
 		verify(service).deleteHeroById(eq(ID));
 	}
+	
+	@Test
+	public void testSearchHeroesByName(){
+		assertThat(controller.searchHeroByName(NAME_LIKE), is(List.of(heroDto)));
+		verify(service).searchHeroByName(eq(NAME_LIKE));
+	}
+	
 }

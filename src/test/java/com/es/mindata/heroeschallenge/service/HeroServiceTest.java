@@ -147,7 +147,7 @@ public class HeroServiceTest {
 	
 	@Test
 	public void testSearchHeroByNameThenReturnListHeroes(){
-	    assertThat(service.searchHeroByName(NAME_LIKE), is(List.of(hero)));
+	    assertThat(service.searchHeroByName(NAME_LIKE), is(List.of(heroDto)));
 	    verify(repository).searchHeroByName(NAME_LIKE);
 	    verify(repository, times(1)).searchHeroByName(NAME_LIKE);
 	}

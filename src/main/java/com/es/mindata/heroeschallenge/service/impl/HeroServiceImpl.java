@@ -50,11 +50,14 @@ public class HeroServiceImpl implements HeroService {
 		return mapperUtil.getMapper().map(repository.save(heroDB), HeroDTO.class);
 	}
 
-	public List<Hero> searchHeroByName(String name) {
+	public List<HeroDTO> searchHeroByName(String name) {
 		if(name == null) {
 			throw new HeroNotFoundException("Hero not found");
 		}
-		return repository.searchHeroByName(name);
+		return repository.searchHeroByName(name)
+				.stream()
+				.map((hero -> mapperUtil.getMapper().map(hero, HeroDTO.class)))
+				.collect(Collectors.toList());
 	}
 	
 	private Hero getHeroById(Long heroId) {
