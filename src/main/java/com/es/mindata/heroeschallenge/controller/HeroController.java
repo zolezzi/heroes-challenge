@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.es.mindata.heroeschallenge.aspect.LogExecutionTime;
 import com.es.mindata.heroeschallenge.controller.response.BasicResponse;
 import com.es.mindata.heroeschallenge.controller.response.HeroResponse;
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
@@ -48,6 +49,7 @@ public class HeroController {
             value = "/find-hero-by-id/{id}",
             produces = { "application/json" }
     )
+    @LogExecutionTime
 	public HeroDTO findHeroById(@PathVariable("id") Long id) {
 		return service.findHeroById(id);
 	}
@@ -67,6 +69,7 @@ public class HeroController {
             value = "/find-all-heroes",
             produces = { "application/json" }
     )
+    @LogExecutionTime
     public List<HeroDTO> findAllHeroes(){
         return service.findAllHeroes();
     }
@@ -85,6 +88,7 @@ public class HeroController {
             value = "/save-hero",
             produces = { "application/json" }
     )
+    @LogExecutionTime
     public HeroResponse saveHero(@RequestBody HeroVO hero){
         return new HeroResponse(service.saveHero(hero), Boolean.FALSE, "Successfully saved");
     }
@@ -103,6 +107,7 @@ public class HeroController {
             value = "/update-hero/{id}",
             produces = { "application/json" }
     )
+    @LogExecutionTime
     public HeroResponse updateHero(@RequestBody HeroDTO hero, @PathVariable("id") Long heroId){
         return new HeroResponse(service.updateHero(hero, heroId), Boolean.FALSE, "Successfully updated");
     }
@@ -121,6 +126,7 @@ public class HeroController {
             value = "/delete-hero/{id}",
             produces = { "application/json" }
     )
+    @LogExecutionTime
     public BasicResponse deleteHeroById(@PathVariable("id") Long heroId){
     	service.deleteHeroById(heroId);
         return new BasicResponse("Successfully deleted", Boolean.FALSE);
@@ -141,6 +147,7 @@ public class HeroController {
             value = "/search-hero-by-name",
             produces = { "application/json" }
     )
+    @LogExecutionTime
     public List<HeroDTO> searchHeroByName(@RequestBody HeroFilterDTO filter){
         return service.searchHeroByName(filter);
     }
