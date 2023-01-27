@@ -3,6 +3,10 @@ package com.es.mindata.heroeschallenge.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
@@ -23,11 +27,13 @@ public class HeroServiceImpl implements HeroService {
 	private final HeroRepository repository;
 	private final MapperUtil mapperUtil;
 	
+	@Cacheable("heroes")
 	public HeroDTO findHeroById(Long heroId) {
 		var heroDB = getHeroById(heroId);
 		return mapperUtil.getMapper().map(heroDB, HeroDTO.class);
 	}
 
+	@Cacheable("heroes")
 	public List<HeroDTO> findAllHeroes() {
 		return  repository.findAll()
 				.stream()
@@ -35,22 +41,28 @@ public class HeroServiceImpl implements HeroService {
 				.collect(Collectors.toList());
 	}
 
+	@CacheEvict(value="heroes", allEntries = true)
 	public void deleteHeroById(Long heroId) {
 		 var heroDB = getHeroById(heroId);
 		 repository.delete(heroDB);
 	}
 	
+	@Transactional
+	@CacheEvict(value="heroes", allEntries = true)
 	public HeroDTO saveHero(HeroVO hero) {
 		var heroDB = repository.save(mapperUtil.getMapper().map(hero, Hero.class));
 		return mapperUtil.getMapper().map(heroDB, HeroDTO.class);
 	}
 	
+	@Transactional
+	@CacheEvict(value="heroes", allEntries = true)
 	public HeroDTO updateHero(HeroDTO hero, Long heroId) {
 		var heroDB = getHeroById(heroId);
 		heroDB.setName(hero.getName());
 		return mapperUtil.getMapper().map(repository.save(heroDB), HeroDTO.class);
 	}
 
+	@Cacheable("heroes")
 	public List<HeroDTO> searchHeroByName(HeroFilterDTO filter) {
 		if(filter == null) {
 			throw new HeroNotFoundException("Hero not found");
