@@ -7,4 +7,5 @@
  * Execute ```cd docker```
  * Execute ```docker-compose up```
  * Go to http://localhost:8080/swagger-ui/index.html to see swagger documentation
+  
  **NOTE:** to log in, authenticate the username and password is "**admin**" in both
