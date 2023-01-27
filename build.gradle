@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.2'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "com.palantir.docker" version "0.22.1"
 }
 
 group = 'com.es.mindata'
@@ -16,6 +17,21 @@ configurations {
 
 repositories {
 	mavenCentral()
+}
+
+task unpack(type: Copy) {
+    dependsOn bootJar
+    from(zipTree(tasks.bootJar.outputs.files.singleFile))
+    into("build/dependency")
+}
+
+docker {
+	println "Docker Result -> heroes-challenge-app:latest"
+	name "heroes-challenge-app:latest"
+	tag "Heroes-App", "heroes-challenge-app:latest"
+	dockerfile file("docker/Dockerfile")
+	copySpec.from(tasks.unpack.outputs).into("dependency")
+	buildArgs(['DEPENDENCY': "dependency"])
 }
 
 dependencies {
