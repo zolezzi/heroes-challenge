@@ -34,7 +34,8 @@ public class AuthenticatorController {
             @ApiResponse(code = 500, message = "Internal server error.", response = JwtResponseDTO.class) })
     @PostMapping(
             value = "/login",
-            produces = { "application/json" }
+            produces = { "application/json" },
+            consumes = {"application/json"}
     )
     public JwtResponseDTO login(@RequestBody UserDTO user){
         return service.login(user);

@@ -42,7 +42,9 @@ public class HeroServiceTest {
 	private static final Long ID_HERO_DELETE_NOT_FOUND = 10L;
 	private static final String NAME = "Spiderman";
 	private static final String NAME_LIKE = "man";
+	private static final String NAME_LIKE_VALUE = "%man%";
 	private static final String NAME_LIKE_NOT_MATCH = "Bat";
+	private static final String NAME_LIKE_NOT_MATCH_VALUE = "%Bat%";
 	
 	
 	@Mock
@@ -81,8 +83,10 @@ public class HeroServiceTest {
 		when(repository.save(hero)).thenReturn(hero);
 		when(repository.save(hero)).thenReturn(hero);
 		when(repository.findAll()).thenReturn(List.of(hero));
-		when(repository.searchHeroByName(NAME_LIKE)).thenReturn(List.of(hero));
-		when(repository.searchHeroByName(NAME_LIKE_NOT_MATCH)).thenReturn(Collections.emptyList());
+		when(repository.searchHeroByName(NAME_LIKE_VALUE)).thenReturn(List.of(hero));
+		when(repository.searchHeroByName(NAME_LIKE_NOT_MATCH_VALUE)).thenReturn(Collections.emptyList());
+		when(repository.searchHeroByName(NAME_LIKE_VALUE)).thenReturn(List.of(hero));
+		when(repository.searchHeroByName(NAME_LIKE_NOT_MATCH_VALUE)).thenReturn(Collections.emptyList());
 	}
 	
 	@Test
@@ -150,16 +154,16 @@ public class HeroServiceTest {
 	public void testSearchHeroByNameThenReturnListHeroes(){
 		var heroFilterDto = new HeroFilterDTO(NAME_LIKE);
 	    assertThat(service.searchHeroByName(heroFilterDto), is(List.of(heroDto)));
-	    verify(repository).searchHeroByName(NAME_LIKE);
-	    verify(repository, times(1)).searchHeroByName(NAME_LIKE);
+	    verify(repository).searchHeroByName(NAME_LIKE_VALUE);
+	    verify(repository, times(1)).searchHeroByName(NAME_LIKE_VALUE);
 	}
 	
 	@Test
 	public void testSearchHeroByNameAndNotMatchedThenReturnEmptyLists(){
 		var heroFilterDto = new HeroFilterDTO(NAME_LIKE_NOT_MATCH);
 	    assertThat(service.searchHeroByName(heroFilterDto), is(Collections.emptyList()));
-	    verify(repository).searchHeroByName(NAME_LIKE_NOT_MATCH);
-	    verify(repository, times(1)).searchHeroByName(NAME_LIKE_NOT_MATCH);
+	    verify(repository).searchHeroByName(NAME_LIKE_NOT_MATCH_VALUE);
+	    verify(repository, times(1)).searchHeroByName(NAME_LIKE_NOT_MATCH_VALUE);
 	}
 	
 	@Test

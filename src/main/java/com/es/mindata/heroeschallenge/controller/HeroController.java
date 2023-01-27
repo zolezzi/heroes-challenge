@@ -48,7 +48,7 @@ public class HeroController {
             value = "/find-hero-by-id/{id}",
             produces = { "application/json" }
     )
-	public HeroDTO findHeroById(Long id) {
+	public HeroDTO findHeroById(@PathVariable("id") Long id) {
 		return service.findHeroById(id);
 	}
 
