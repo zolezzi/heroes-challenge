@@ -2,6 +2,7 @@ package com.es.mindata.heroeschallenge.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.es.mindata.heroeschallenge.controller.response.HeroResponse;
@@ -26,5 +27,9 @@ public class HeroController {
 
     public HeroResponse saveHero(@RequestBody HeroVO hero){
         return new HeroResponse(service.saveHero(hero), Boolean.FALSE, "Successfully saved");
+    }
+    
+    public HeroResponse updateHero(@RequestBody HeroDTO hero, @PathVariable("id") Long heroId){
+        return new HeroResponse(service.updateHero(hero, heroId), Boolean.FALSE, "Successfully updated");
     }
 }

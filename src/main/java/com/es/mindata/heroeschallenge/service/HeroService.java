@@ -16,7 +16,7 @@ public interface HeroService {
 	
 	HeroDTO saveHero(HeroVO hero);
 	
-	Hero updateHero(Hero hero, Long heroId);
+	HeroDTO updateHero(HeroDTO hero, Long heroId);
 	
 	List<Hero> searchHeroByName(String name);
 }

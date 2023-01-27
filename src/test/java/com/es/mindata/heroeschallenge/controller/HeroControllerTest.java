@@ -45,6 +45,7 @@ public class HeroControllerTest {
 		when(service.findHeroById(ID)).thenReturn(heroDto);
 		when(service.findAllHeroes()).thenReturn(List.of(heroDto));
 		when(service.saveHero(any())).thenReturn(heroDto);
+		when(service.updateHero(heroDto, ID)).thenReturn(heroDto);
 	}
 	
 	@Test
@@ -68,5 +69,14 @@ public class HeroControllerTest {
 		assertThat(response.getError(),is(Boolean.FALSE));
 		assertThat(response.getResponse(),is(heroDto));
 		verify(service).saveHero(eq(heroVO));
+	}
+	
+	@Test
+	public void testUpdateHeroThenReturnHeroResponse(){
+		var response = controller.updateHero(heroDto, ID);
+		assertThat(response.getMessage(),is(notNullValue()));    
+		assertThat(response.getError(),is(Boolean.FALSE));
+		assertThat(response.getResponse(),is(heroDto));
+		verify(service).updateHero(eq(heroDto), eq(ID));
 	}
 }

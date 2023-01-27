@@ -131,7 +131,7 @@ public class HeroServiceTest {
 	public void testUpdateHero(){
 		assertThat(hero.getName(), is(NAME));
 		hero.setName("Spider-Man");
-	    assertThat(service.updateHero(hero, ID), is(hero));
+	    assertThat(service.updateHero(heroDto, ID), is(heroDto));
 	    verify(repository).save(eq(hero));
 	    verify(repository, times(1)).save(hero);
 	}
@@ -140,7 +140,7 @@ public class HeroServiceTest {
 	public void testUpdateHeroAndNotFoundThenReturnException(){
 		ex.expect(HeroNotFoundException.class);
 		ex.expectMessage("Hero not found");
-		service.updateHero(hero, ID_HERO_NOT_FOUND);
+		service.updateHero(heroDto, ID_HERO_NOT_FOUND);
 	    verify(repository, never()).findById(eq(ID_HERO_NOT_FOUND));
 	    verify(repository, never()).save(eq(hero));
 	}

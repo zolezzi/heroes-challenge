@@ -44,10 +44,10 @@ public class HeroServiceImpl implements HeroService {
 		return mapperUtil.getMapper().map(heroDB, HeroDTO.class);
 	}
 	
-	public Hero updateHero(Hero hero, Long heroId) {
+	public HeroDTO updateHero(HeroDTO hero, Long heroId) {
 		var HeroDB = getHeroById(heroId);
 		HeroDB.setName(hero.getName());
-		return repository.save(HeroDB);
+		return mapperUtil.getMapper().map(repository.save(HeroDB), HeroDTO.class);
 	}
 
 	public List<Hero> searchHeroByName(String name) {
