@@ -23,8 +23,8 @@ public class HeroServiceImpl implements HeroService {
 	private final MapperUtil mapperUtil;
 	
 	public HeroDTO findHeroById(Long heroId) {
-		var HeroDB = getHeroById(heroId);
-		return mapperUtil.getMapper().map(HeroDB, HeroDTO.class);
+		var heroDB = getHeroById(heroId);
+		return mapperUtil.getMapper().map(heroDB, HeroDTO.class);
 	}
 
 	public List<HeroDTO> findAllHeroes() {
@@ -35,8 +35,8 @@ public class HeroServiceImpl implements HeroService {
 	}
 
 	public void deleteHeroById(Long heroId) {
-		 var HeroDB = getHeroById(heroId);
-		 repository.delete(HeroDB);
+		 var heroDB = getHeroById(heroId);
+		 repository.delete(heroDB);
 	}
 	
 	public HeroDTO saveHero(HeroVO hero) {
@@ -45,9 +45,9 @@ public class HeroServiceImpl implements HeroService {
 	}
 	
 	public HeroDTO updateHero(HeroDTO hero, Long heroId) {
-		var HeroDB = getHeroById(heroId);
-		HeroDB.setName(hero.getName());
-		return mapperUtil.getMapper().map(repository.save(HeroDB), HeroDTO.class);
+		var heroDB = getHeroById(heroId);
+		heroDB.setName(hero.getName());
+		return mapperUtil.getMapper().map(repository.save(heroDB), HeroDTO.class);
 	}
 
 	public List<Hero> searchHeroByName(String name) {

@@ -79,4 +79,12 @@ public class HeroControllerTest {
 		assertThat(response.getResponse(),is(heroDto));
 		verify(service).updateHero(eq(heroDto), eq(ID));
 	}
+	
+	@Test
+	public void testDeleteHeroThenReturnBasicResponse(){
+		var response = controller.deleteHeroById(ID);
+		assertThat(response.getMessage(),is(notNullValue()));    
+		assertThat(response.getError(),is(Boolean.FALSE));
+		verify(service).deleteHeroById(eq(ID));
+	}
 }

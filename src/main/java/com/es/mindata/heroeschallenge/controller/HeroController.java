@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.es.mindata.heroeschallenge.controller.response.BasicResponse;
 import com.es.mindata.heroeschallenge.controller.response.HeroResponse;
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
 import com.es.mindata.heroeschallenge.service.impl.HeroServiceImpl;
@@ -31,5 +32,10 @@ public class HeroController {
     
     public HeroResponse updateHero(@RequestBody HeroDTO hero, @PathVariable("id") Long heroId){
         return new HeroResponse(service.updateHero(hero, heroId), Boolean.FALSE, "Successfully updated");
+    }
+    
+    public BasicResponse deleteHeroById(@PathVariable("id") Long heroId){
+    	service.deleteHeroById(heroId);
+        return new BasicResponse("Successfully deleted", Boolean.FALSE);
     }
 }
