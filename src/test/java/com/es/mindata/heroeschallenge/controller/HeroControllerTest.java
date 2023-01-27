@@ -19,6 +19,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.es.mindata.heroeschallenge.controller.response.HeroResponse;
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
+import com.es.mindata.heroeschallenge.dto.HeroFilterDTO;
 import com.es.mindata.heroeschallenge.service.impl.HeroServiceImpl;
 import com.es.mindata.heroeschallenge.vo.HeroVO;
 
@@ -47,7 +48,7 @@ public class HeroControllerTest {
 		when(service.findAllHeroes()).thenReturn(List.of(heroDto));
 		when(service.saveHero(any())).thenReturn(heroDto);
 		when(service.updateHero(heroDto, ID)).thenReturn(heroDto);
-		when(service.searchHeroByName(NAME_LIKE)).thenReturn(List.of(heroDto));
+		when(service.searchHeroByName(any())).thenReturn(List.of(heroDto));
 	}
 	
 	@Test
@@ -92,8 +93,9 @@ public class HeroControllerTest {
 	
 	@Test
 	public void testSearchHeroesByName(){
-		assertThat(controller.searchHeroByName(NAME_LIKE), is(List.of(heroDto)));
-		verify(service).searchHeroByName(eq(NAME_LIKE));
+		var heroFilterDto = new HeroFilterDTO(NAME_LIKE);
+		assertThat(controller.searchHeroByName(heroFilterDto), is(List.of(heroDto)));
+		verify(service).searchHeroByName(eq(heroFilterDto));
 	}
 	
 }

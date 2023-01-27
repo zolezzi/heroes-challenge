@@ -3,6 +3,7 @@ package com.es.mindata.heroeschallenge.service;
 import java.util.List;
 
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
+import com.es.mindata.heroeschallenge.dto.HeroFilterDTO;
 import com.es.mindata.heroeschallenge.vo.HeroVO;
 
 public interface HeroService {
@@ -17,5 +18,5 @@ public interface HeroService {
 	
 	HeroDTO updateHero(HeroDTO hero, Long heroId);
 	
-	List<HeroDTO> searchHeroByName(String name);
+	List<HeroDTO> searchHeroByName(HeroFilterDTO filter);
 }

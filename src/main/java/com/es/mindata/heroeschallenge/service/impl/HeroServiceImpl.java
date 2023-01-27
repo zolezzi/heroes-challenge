@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
+import com.es.mindata.heroeschallenge.dto.HeroFilterDTO;
 import com.es.mindata.heroeschallenge.entity.Hero;
 import com.es.mindata.heroeschallenge.exception.HeroNotFoundException;
 import com.es.mindata.heroeschallenge.repository.HeroRepository;
@@ -50,11 +51,11 @@ public class HeroServiceImpl implements HeroService {
 		return mapperUtil.getMapper().map(repository.save(heroDB), HeroDTO.class);
 	}
 
-	public List<HeroDTO> searchHeroByName(String name) {
-		if(name == null) {
+	public List<HeroDTO> searchHeroByName(HeroFilterDTO filter) {
+		if(filter == null) {
 			throw new HeroNotFoundException("Hero not found");
 		}
-		return repository.searchHeroByName(name)
+		return repository.searchHeroByName(filter.getLikeName())
 				.stream()
 				.map((hero -> mapperUtil.getMapper().map(hero, HeroDTO.class)))
 				.collect(Collectors.toList());

@@ -25,6 +25,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
 
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
+import com.es.mindata.heroeschallenge.dto.HeroFilterDTO;
 import com.es.mindata.heroeschallenge.entity.Hero;
 import com.es.mindata.heroeschallenge.exception.HeroNotFoundException;
 import com.es.mindata.heroeschallenge.repository.HeroRepository;
@@ -147,14 +148,16 @@ public class HeroServiceTest {
 	
 	@Test
 	public void testSearchHeroByNameThenReturnListHeroes(){
-	    assertThat(service.searchHeroByName(NAME_LIKE), is(List.of(heroDto)));
+		var heroFilterDto = new HeroFilterDTO(NAME_LIKE);
+	    assertThat(service.searchHeroByName(heroFilterDto), is(List.of(heroDto)));
 	    verify(repository).searchHeroByName(NAME_LIKE);
 	    verify(repository, times(1)).searchHeroByName(NAME_LIKE);
 	}
 	
 	@Test
 	public void testSearchHeroByNameAndNotMatchedThenReturnEmptyLists(){
-	    assertThat(service.searchHeroByName(NAME_LIKE_NOT_MATCH), is(Collections.emptyList()));
+		var heroFilterDto = new HeroFilterDTO(NAME_LIKE_NOT_MATCH);
+	    assertThat(service.searchHeroByName(heroFilterDto), is(Collections.emptyList()));
 	    verify(repository).searchHeroByName(NAME_LIKE_NOT_MATCH);
 	    verify(repository, times(1)).searchHeroByName(NAME_LIKE_NOT_MATCH);
 	}
