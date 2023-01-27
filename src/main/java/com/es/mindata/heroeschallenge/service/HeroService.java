@@ -2,11 +2,12 @@ package com.es.mindata.heroeschallenge.service;
 
 import java.util.List;
 
+import com.es.mindata.heroeschallenge.dto.HeroDTO;
 import com.es.mindata.heroeschallenge.entity.Hero;
 
 public interface HeroService {
 
-	Hero findHeroById(Long heroId);
+	HeroDTO findHeroById(Long heroId);
 	
 	List<Hero> findAllHeroes();
 	

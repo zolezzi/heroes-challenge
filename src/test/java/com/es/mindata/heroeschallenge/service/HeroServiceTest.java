@@ -21,14 +21,17 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.modelmapper.ModelMapper;
 
+import com.es.mindata.heroeschallenge.dto.HeroDTO;
 import com.es.mindata.heroeschallenge.entity.Hero;
 import com.es.mindata.heroeschallenge.exception.HeroNotFoundException;
 import com.es.mindata.heroeschallenge.repository.HeroRepository;
 import com.es.mindata.heroeschallenge.service.impl.HeroServiceImpl;
+import com.es.mindata.heroeschallenge.utils.MapperUtil;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ServiceHeroTest {
+public class HeroServiceTest {
 
 	private static final Long ID = 1L;
 	private static final Long ID_HERO_NOT_FOUND = 10L;
@@ -43,7 +46,16 @@ public class ServiceHeroTest {
 	private Hero hero;
 	
 	@Mock
+	private HeroDTO heroDto;
+	
+	@Mock
 	private HeroRepository repository;
+	
+	@Mock
+	private MapperUtil mapperUtil;
+	
+	@Mock
+	private ModelMapper mapper;
 	
 	@Rule
 	public ExpectedException ex = ExpectedException.none();
@@ -53,11 +65,13 @@ public class ServiceHeroTest {
 	
 	@Before
 	public void setUp(){
-		service = new HeroServiceImpl(repository);
+		service = new HeroServiceImpl(repository, mapperUtil);
 		
 		when(hero.getName()).thenReturn(NAME);
 		
 		when(repository.findById(ID)).thenReturn(Optional.of(hero));
+		when(mapperUtil.getMapper()).thenReturn(mapper);
+		when(mapper.map(any(), any())).thenReturn(heroDto);
 		when(repository.findById(ID_HERO_DELETE)).thenReturn(Optional.of(hero));
 		when(repository.save(hero)).thenReturn(hero);
 		when(repository.save(hero)).thenReturn(hero);
@@ -68,8 +82,8 @@ public class ServiceHeroTest {
 	
 	@Test
 	public void testFindHeroByIdThenReturnAHero(){
-		Hero heroBD = service.findHeroById(ID);
-	    assertThat(heroBD, is(hero));
+		HeroDTO heroResponse = service.findHeroById(ID);
+	    assertThat(heroResponse, is(heroDto));
 	    verify(repository).findById(eq(ID));
 	}
 	

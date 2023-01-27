@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.es.mindata.heroeschallenge.exception.HeroNotFoundException;
+import com.es.mindata.heroeschallenge.dto.HeroDTO;
 import com.es.mindata.heroeschallenge.entity.Hero;
+import com.es.mindata.heroeschallenge.exception.HeroNotFoundException;
 import com.es.mindata.heroeschallenge.repository.HeroRepository;
 import com.es.mindata.heroeschallenge.service.HeroService;
+import com.es.mindata.heroeschallenge.utils.MapperUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,9 +18,11 @@ import lombok.RequiredArgsConstructor;
 public class HeroServiceImpl implements HeroService {
 	
 	private final HeroRepository repository;
+	private final MapperUtil mapperUtil;
 	
-	public Hero findHeroById(Long heroId) {
-		return getHeroById(heroId);
+	public HeroDTO findHeroById(Long heroId) {
+		var HeroDB = getHeroById(heroId);
+		return mapperUtil.getMapper().map(HeroDB, HeroDTO.class);
 	}
 
 	public List<Hero> findAllHeroes() {
