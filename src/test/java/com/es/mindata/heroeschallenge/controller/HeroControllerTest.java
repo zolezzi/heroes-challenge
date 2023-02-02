@@ -2,6 +2,7 @@ package com.es.mindata.heroeschallenge.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -17,7 +18,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import com.es.mindata.heroeschallenge.controller.response.HeroResponse;
 import com.es.mindata.heroeschallenge.dto.HeroDTO;
 import com.es.mindata.heroeschallenge.dto.HeroFilterDTO;
 import com.es.mindata.heroeschallenge.service.impl.HeroServiceImpl;
@@ -35,9 +35,6 @@ public class HeroControllerTest {
 	
 	@Mock
 	private HeroDTO heroDto;
-	
-	@Mock
-	private HeroResponse heroReponse;
 	
 	@InjectMocks
 	private HeroController controller;
@@ -71,6 +68,8 @@ public class HeroControllerTest {
 		assertThat(response.getMessage(),is(notNullValue()));    
 		assertThat(response.getError(),is(Boolean.FALSE));
 		assertThat(response.getResponse(),is(heroDto));
+		assertNotNull(response.toString());
+		assertNotNull(response.hashCode());
 		verify(service).saveHero(eq(heroVO));
 	}
 	
@@ -88,6 +87,8 @@ public class HeroControllerTest {
 		var response = controller.deleteHeroById(ID);
 		assertThat(response.getMessage(),is(notNullValue()));    
 		assertThat(response.getError(),is(Boolean.FALSE));
+		assertNotNull(response.toString());
+		assertNotNull(response.hashCode());
 		verify(service).deleteHeroById(eq(ID));
 	}
 	
