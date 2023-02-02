@@ -14,7 +14,7 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
 	@ExceptionHandler(HeroNotFoundException.class)
 	public ResponseEntity<BasicResponse> handleNotFoundException(Exception e){
-		BasicResponse response = new BasicResponse("Not Found", Boolean.TRUE);
-		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+		var basicResponse = new BasicResponse("Not Found", Boolean.TRUE);
+		return new ResponseEntity<>(basicResponse, HttpStatus.NOT_FOUND);
 	}
 }

@@ -23,8 +23,8 @@ public class TokenUtil {
 	private long JWT_TOKEN_VALIDITY;
 	
 	public String createToken(String username) {
-		long expirationTime = JWT_TOKEN_VALIDITY * 1000;
-		Date expirationDate = new Date(System.currentTimeMillis() + expirationTime);
+		var expirationTime = JWT_TOKEN_VALIDITY * 1000;
+		var expirationDate = new Date(System.currentTimeMillis() + expirationTime);
 		Map<String, Object> claims = Map.of("name", username);
 		return Jwts.builder()
 				.setSubject(username)

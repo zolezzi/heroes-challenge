@@ -26,8 +26,8 @@ public class AuthenticatorServiceImpl implements AuthenticatorService{
 	public JwtResponseDTO login(UserDTO user) {
 		authenticate(user.getUsername(), user.getPassword());
 		var userDetails = (User) repository.findOneByUsername(user.getUsername())
-				.orElseThrow(() -> new UsernameNotFoundException("No found user:" + user.getUsername()));
-        String token = tokenUtil.createToken(userDetails.getUsername());
+				.orElseThrow(() -> new UsernameNotFoundException(String.format("No found user:%s", user.getUsername())));
+        var token = tokenUtil.createToken(userDetails.getUsername());
 		return new JwtResponseDTO(userDetails.getUsername(), token);
 	}
 	

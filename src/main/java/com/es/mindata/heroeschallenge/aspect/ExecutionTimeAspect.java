@@ -16,13 +16,15 @@ public class ExecutionTimeAspect {
 
 	@Around("@annotation(LogExecutionTime)")
 	public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable{
-		long startTime = System.currentTimeMillis();
+		var startTime = System.currentTimeMillis();
 		try{
 			return joinPoint.proceed();
 		}finally {
-			String signature = joinPoint.getSignature().getName();
-			String method = joinPoint.getSignature().getDeclaringTypeName();
-			log.info("Method: {} executed in: {} milliseconds", method + "." + signature, System.currentTimeMillis() - startTime);
+			var signature = joinPoint.getSignature().getName();
+			var method = joinPoint.getSignature().getDeclaringTypeName();
+			var finishTime = System.currentTimeMillis() - startTime;
+			log.info("Method: {} executed in: {} milliseconds", String.format("%s.%s", method, signature), finishTime);
 		}
 	}
+
 }
